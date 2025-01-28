@@ -211,6 +211,9 @@ async function handleSend() {
 
     <!-- 输入框 -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/60 backdrop-blur-md border-t border-gray-200 shadow-sm z-20">
+      <div class="powered-by text-xs text-gray-400 opacity-50 absolute left-1/2 -top-6 transform -translate-x-1/2 whitespace-nowrap">
+        Powered by DeepSeek
+      </div>
       <div class="max-w-[640px] mx-auto p-4">
         <div class="flex gap-2">
           <UDropdown
