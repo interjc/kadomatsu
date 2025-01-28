@@ -134,7 +134,7 @@ async function handleSend() {
   <div class="min-h-screen flex flex-col relative">
     <!-- 头部 -->
     <div class="fixed top-0 left-0 right-0 bg-white/60 backdrop-blur-md border-b border-gray-200 shadow-sm z-20">
-      <div class="max-w-[640px] mx-auto px-4 py-3">
+      <div class="max-w-[1280px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
           <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
           <div class="flex items-center gap-3 ml-auto">
@@ -180,7 +180,7 @@ async function handleSend() {
     </div>
 
     <!-- 聊天内容区 -->
-    <div class="flex-1 overflow-y-auto p-4 pb-24 space-y-4 max-w-[640px] mx-auto w-full mt-[60px] mb-[76px]">
+    <div class="chat-container flex-1 overflow-y-auto p-4 pb-24 space-y-4 max-w-[1280px] mx-auto w-full mt-[60px] mb-[76px]">
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
@@ -216,7 +216,7 @@ async function handleSend() {
       <div class="powered-by text-xs text-gray-400 opacity-50 absolute left-1/2 -top-6 transform -translate-x-1/2 whitespace-nowrap">
         Powered by DeepSeek
       </div>
-      <div class="max-w-[640px] mx-auto p-4">
+      <div class="max-w-[1280px] mx-auto p-4">
         <div class="flex gap-2">
           <UDropdown
             :items="dropdownItems"
@@ -352,6 +352,21 @@ textarea::-webkit-scrollbar-thumb:hover {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.chat-container {
+  &::-webkit-scrollbar {
+    @apply w-2;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-300/20 dark:bg-slate-600/20;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: none;
+  }
 }
 
 .powered-by {
