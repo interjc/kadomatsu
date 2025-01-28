@@ -158,7 +158,7 @@ async function handleSend() {
             </a>
             <a
               title="立即加入课程"
-              href="https://s.zhaikr.com/vj"
+              href="https://justincourse.com"
               target="_blank"
               rel="noopener noreferrer"
               class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
