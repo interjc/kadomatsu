@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DropdownItem } from '#ui/types'
 import { type PromptType, PROMPT_LABELS } from '~/constants/prompts'
 
 const inputText = ref('')
@@ -11,6 +12,24 @@ const abortController = ref<AbortController | null>(null)
 const isHovering = ref(false)
 
 const promptTypes = PROMPT_LABELS
+
+// 转换为下拉菜单选项
+const dropdownItems = [
+  Object.entries(promptTypes).map(([value, label]) => ({
+    label,
+    selected: selectedType.value === value,
+    click: () => selectedType.value = value as PromptType
+  }))
+]
+
+// 监听选中状态变化，更新选中状态
+watch(selectedType, () => {
+  dropdownItems[0] = Object.entries(promptTypes).map(([value, label]) => ({
+    label,
+    selected: selectedType.value === value,
+    click: () => selectedType.value = value as PromptType
+  }))
+})
 
 async function copyToClipboard(text: string, index: number) {
   try {
@@ -131,9 +150,9 @@ async function handleSend() {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col relative">
     <!-- 头部 -->
-    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-10">
+    <div class="fixed top-0 left-0 right-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm z-20">
       <div class="max-w-[640px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
           <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">✨ 新年祝福小助手 🎊</h1>
@@ -180,7 +199,7 @@ async function handleSend() {
     </div>
 
     <!-- 聊天内容区 -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-4 max-w-[640px] mx-auto w-full">
+    <div class="flex-1 overflow-y-auto p-4 space-y-4 max-w-[640px] mx-auto w-full mt-[60px] mb-[76px]">
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
@@ -206,27 +225,48 @@ async function handleSend() {
     </div>
 
     <!-- 输入框 -->
-    <div class="sticky bottom-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-sm z-10">
+    <div class="fixed bottom-0 left-0 right-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-sm z-20">
       <div class="max-w-[640px] mx-auto p-4">
         <div class="flex gap-2">
-          <select
-            v-model="selectedType"
-            class="w-28 px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100"
+          <UDropdown
+            :items="dropdownItems"
+            :popper="{ placement: 'top-start' }"
+            mode="click"
+            :ui="{
+              container: 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm min-w-[8rem]',
+              base: 'relative inline-flex text-left rtl:text-right w-[8rem]',
+              trigger: 'inline-flex w-full items-center justify-between px-3 py-2 text-sm gap-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100',
+              width: 'w-[8rem]',
+              height: 'mt-2',
+              background: 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm',
+              rounded: 'rounded-lg',
+              shadow: 'shadow-lg',
+              item: {
+                base: 'relative flex items-center gap-2 px-3 py-2 cursor-pointer text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700',
+                active: 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white',
+                selected: 'text-blue-500 dark:text-blue-400',
+                disabled: 'cursor-not-allowed opacity-50',
+                icon: { base: 'flex-shrink-0 h-4 w-4' },
+                label: 'truncate'
+              }
+            }"
           >
-            <option
-              v-for="(label, type) in promptTypes"
-              :key="type"
-              :value="type"
-            >
-              {{ label }}
-            </option>
-          </select>
+            <template #trigger="{ open }">
+              <div class="flex items-center justify-between gap-2 w-full">
+                <span class="truncate">{{ promptTypes[selectedType] }}</span>
+                <Icon
+                  :name="open ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
+                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                />
+              </div>
+            </template>
+          </UDropdown>
 
           <textarea
             v-model="inputText"
             class="flex-1 p-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100"
-            :placeholder="'请输入需要生成' + promptTypes[selectedType] + '的相关文字...'"
-            rows="1"
+            :placeholder="promptTypes[selectedType] + '的相关文字...'"
+            rows="2"
             @keydown.enter.prevent="handleSend"
           ></textarea>
 
@@ -281,5 +321,11 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 ::placeholder {
   @apply text-gray-400 dark:text-gray-500;
+}
+
+/* 确保内容区域在固定头部和底部之间滚动 */
+.min-h-screen {
+  height: 100vh;
+  height: 100dvh;
 }
 </style>
