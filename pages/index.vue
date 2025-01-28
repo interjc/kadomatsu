@@ -133,17 +133,17 @@ async function handleSend() {
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- 头部 -->
-    <div class="bg-white/60 backdrop-blur-md border-b shadow-sm sticky top-0 z-10">
+    <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-10">
       <div class="max-w-[640px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
+          <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">✨ 新年祝福小助手 🎊</h1>
           <div class="flex items-center gap-3 ml-auto">
             <a
               title="关注 X@interjc"
               href="https://x.com/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
             >
               <Icon name="mdi:twitter" />
             </a>
@@ -152,7 +152,7 @@ async function handleSend() {
               href="https://s.zhaikr.com/vj"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
             >
               <Icon name="mdi:wechat" />
             </a>
@@ -161,7 +161,7 @@ async function handleSend() {
               href="https://justincourse.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
             >
               <Icon name="mdi:school" />
             </a>
@@ -170,7 +170,7 @@ async function handleSend() {
               href="https://bento.me/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
             >
               <Icon name="simple-icons:bento" />
             </a>
@@ -187,7 +187,7 @@ async function handleSend() {
             'max-w-[80%] p-4 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg',
             message.type === 'user'
               ? 'ml-auto bg-blue-500/85 backdrop-blur-md text-white'
-              : 'mr-auto bg-white/70 backdrop-blur-md shadow-sm hover:bg-white/80'
+              : 'mr-auto bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm hover:bg-white/80 dark:hover:bg-gray-800/80 text-gray-800 dark:text-gray-100'
           ]"
           @click="copyToClipboard(message.content, index)"
         >
@@ -196,7 +196,7 @@ async function handleSend() {
         <small
           v-if="copyTips[index]"
           :class="[
-            'text-blue-600 mt-1 transition-opacity duration-200 font-medium',
+            'text-blue-600 dark:text-blue-400 mt-1 transition-opacity duration-200 font-medium',
             message.type === 'user' ? 'ml-auto' : 'mr-auto'
           ]"
         >
@@ -206,12 +206,12 @@ async function handleSend() {
     </div>
 
     <!-- 输入框 -->
-    <div class="sticky bottom-0 bg-white/60 backdrop-blur-md border-t shadow-sm z-10">
+    <div class="sticky bottom-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-sm z-10">
       <div class="max-w-[640px] mx-auto p-4">
         <div class="flex gap-2">
           <select
             v-model="selectedType"
-            class="w-28 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90"
+            class="w-28 px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100"
           >
             <option
               v-for="(label, type) in promptTypes"
@@ -224,7 +224,7 @@ async function handleSend() {
 
           <textarea
             v-model="inputText"
-            class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90"
+            class="flex-1 p-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100"
             :placeholder="'请输入需要生成' + promptTypes[selectedType] + '的相关文字...'"
             rows="1"
             @keydown.enter.prevent="handleSend"
@@ -235,7 +235,7 @@ async function handleSend() {
             :disabled="false"
             @mouseenter="isHovering = true"
             @mouseleave="isHovering = false"
-            class="px-4 py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-lg transition-all duration-200 font-medium"
+            class="px-4 py-2 backdrop-blur-sm text-white rounded-lg transition-all duration-200 font-medium"
             :class="[
               isLoading
                 ? (isHovering ? 'bg-red-500/90 hover:bg-red-600/90' : 'bg-blue-500/90 hover:bg-blue-600/90')
@@ -271,11 +271,15 @@ textarea::-webkit-scrollbar-track {
 }
 
 textarea::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.5);
+  @apply bg-gray-300 dark:bg-gray-600;
   border-radius: 4px;
 }
 
 textarea::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(156, 163, 175, 0.7);
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+::placeholder {
+  @apply text-gray-400 dark:text-gray-500;
 }
 </style>
