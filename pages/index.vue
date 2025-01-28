@@ -193,7 +193,6 @@ async function handleSend() {
             <div class="space-y-2">
               <USkeleton class="h-4 w-[190px]" />
               <USkeleton class="h-4 w-[160px]" />
-              <USkeleton class="h-4 w-[170px]" />
             </div>
           </template>
           <pre v-else class="whitespace-pre-wrap">{{ message.content }}</pre>
@@ -237,6 +236,7 @@ async function handleSend() {
               }
             }"
           >
+            <span>{{ promptTypes[selectedType] }}</span>
             <template #trigger="{ open }">
               <div class="flex items-center justify-between gap-2 w-full">
                 <span class="truncate">{{ promptTypes[selectedType] }}</span>
@@ -251,7 +251,7 @@ async function handleSend() {
           <textarea
             v-model="inputText"
             class="flex-1 p-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-800 dark:text-gray-100"
-            :placeholder="promptTypes[selectedType] + '的相关文字...'"
+            :placeholder="`发送给${promptTypes[selectedType]}的相关说明文字...`"
             rows="2"
             @keydown.enter.prevent="handleSend"
           ></textarea>
