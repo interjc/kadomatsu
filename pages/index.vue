@@ -162,7 +162,7 @@ async function handleSend() {
               href="https://x.com/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300 pt-1"
             >
               <Icon name="mdi:twitter" />
             </a>
@@ -171,7 +171,7 @@ async function handleSend() {
               href="https://s.zhaikr.com/vj"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300 pt-1"
             >
               <Icon name="mdi:wechat" />
             </a>
@@ -180,7 +180,7 @@ async function handleSend() {
               href="https://justincourse.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300 pt-1"
             >
               <Icon name="mdi:school" />
             </a>
@@ -189,7 +189,7 @@ async function handleSend() {
               href="https://bento.me/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300 pt-1"
             >
               <Icon name="simple-icons:bento" />
             </a>
