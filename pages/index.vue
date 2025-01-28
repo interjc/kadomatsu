@@ -137,7 +137,44 @@ async function handleSend() {
       <div class="max-w-[640px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
           <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
-          <small class="text-gray-500 ml-auto">AI 帮你写出暖心祝福，让心意传递更有温度</small>
+          <div class="flex items-center gap-3 ml-auto">
+            <a
+              title="关注 X@interjc"
+              href="https://x.com/interjc"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+            >
+              <Icon name="mdi:twitter" />
+            </a>
+            <a
+              title="关注我的公众号 @justinjapan"
+              href="https://s.zhaikr.com/vj"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+            >
+              <Icon name="mdi:wechat" />
+            </a>
+            <a
+              title="立即加入课程"
+              href="https://s.zhaikr.com/vj"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+            >
+              <Icon name="mdi:school" />
+            </a>
+            <a
+              title="More about Justin"
+              href="https://bento.me/interjc"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
+            >
+              <Icon name="simple-icons:bento" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

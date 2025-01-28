@@ -3,7 +3,10 @@ export default defineNuxtConfig({
   // 完全禁用 SSR
   ssr: false,
 
-  modules: ["@nuxt/ui"],
+  modules: [
+    "@nuxt/ui",
+    "nuxt-icon"
+  ],
 
   ui: {
     global: true,
