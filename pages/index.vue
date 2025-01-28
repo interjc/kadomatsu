@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { DropdownItem } from '#ui/types'
 import { type PromptType, PROMPT_LABELS } from '~/constants/prompts'
 
 const inputText = ref('')
@@ -181,7 +180,7 @@ async function handleSend() {
     </div>
 
     <!-- 聊天内容区 -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-4 max-w-[640px] mx-auto w-full mt-[60px] mb-[76px]">
+    <div class="flex-1 overflow-y-auto p-4 pb-24 space-y-4 max-w-[640px] mx-auto w-full mt-[60px] mb-[76px]">
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
@@ -195,7 +194,6 @@ async function handleSend() {
           <template v-if="message.type === 'assistant' && !message.content && isLoading">
             <div class="space-y-2">
               <USkeleton class="h-4 w-[190px]" />
-              <USkeleton class="h-4 w-[160px]" />
               <USkeleton class="h-4 w-[130px]" />
             </div>
           </template>
@@ -347,5 +345,30 @@ textarea::-webkit-scrollbar-thumb:hover {
 :deep(.bg-white\/60) {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* 闪光动画效果 */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.powered-by {
+  background: linear-gradient(
+    45deg,
+    #4a90e2,
+    #81c784,
+    #64b5f6,
+    #7986cb,
+    #4a90e2
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: shimmer 20s ease-in-out infinite;
+  font-weight: 500;
+  opacity: 0.8;
 }
 </style>
