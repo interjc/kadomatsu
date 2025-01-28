@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   audioFormData.append('prompt', '这是一节 Nuxt 3 课程视频的录音，请准确识别 Nuxt、Vue、JavaScript、TypeScript 等编程术语')
 
   try {
-    const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+    const response = await fetch(`${config.openaiBaseUrl}/audio/transcriptions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.openaiApiKey}`

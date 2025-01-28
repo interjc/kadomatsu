@@ -10,7 +10,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
+    openaiBaseUrl: process.env.NUXT_OPENAI_BASE_URL || 'https://api.openai.com/v1',
+    openaiApiKey: process.env.NUXT_OPENAI_API_KEY || '',
+    openaiModel: process.env.NUXT_OPENAI_MODEL || 'gpt-4o-mini',
     public: {
       // 这里放置可以暴露给客户端的配置
     }

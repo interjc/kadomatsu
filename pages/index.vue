@@ -1,8 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: ['auth']
-})
-
 const { processFile, state, file, result, reset } = useFileProcessing()
 const isProcessing = computed(() => ['extracting', 'transcribing', 'summarizing'].includes(state.value.stage))
 const showVtt = computed(() => state.value.vtt !== undefined)
