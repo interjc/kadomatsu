@@ -104,30 +104,9 @@ async function handleSend() {
 
     if (!response.ok) throw new Error('请求失败')
 
-    const reader = response.body?.getReader()
-    const decoder = new TextDecoder()
+    const data = await response.json()
+    messages.value[messageIndex].content = data.content
 
-    if (!reader) throw new Error('无法读取响应')
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-
-      const chunk = decoder.decode(value)
-      const lines = chunk.split('\n')
-
-      for (const line of lines) {
-        if (!line.trim()) continue
-        const text = line.replace('data: ', '').trim()
-
-        if (text === '[DONE]') {
-          isLoading.value = false
-          break
-        }
-
-        messages.value[messageIndex].content += text
-      }
-    }
   } catch (error: unknown) {
     if (error instanceof Error && error.name === 'AbortError') {
       return // 请求被取消，不需要显示错误
