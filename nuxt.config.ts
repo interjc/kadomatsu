@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     public: {
       // 这里放置可以暴露给客户端的配置
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://2025.zhaikr.com',
+      allowedOrigins: '*', // 允许所有来源访问
     },
   },
 
