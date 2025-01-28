@@ -103,7 +103,29 @@ export const PROMPT_TEMPLATES = {
 - 可以回忆往事但不要过于煽情
 - 体现对教育工作的理解和尊重
 - 表达对老师的祝福和感激
-内容：${text}`
+内容：${text}`,
+
+  classmate: (text: string) => `
+请根据以下内容生成一段给同学的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
+- 字数在50字左右
+- 语气亲切自然，略带青春活力
+- 可以适当回忆同窗情谊
+- 加入一些简单的emoji表情
+- 避免过于正式或者生疏
+- 体现同学之间的友情和祝愿
+内容：${text}`,
+
+  netfriend: (text: string) => `
+请根据以下内容生成一段给网友的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
+- 字数在40字左右
+- 语气温暖友好，不过分熟稔
+- 可以用一些网络流行语
+- 加入适量emoji表情增添趣味
+- 保持适度的距离感
+- 体现互联网时代的连接和美好
+内容：${text}`,
 } as const
 
 export type PromptType = keyof typeof PROMPT_TEMPLATES
@@ -118,5 +140,7 @@ export const PROMPT_LABELS = {
   groupchat: '公司群',
   boss: '给老板',
   client: '给客户',
-  teacher: '给老师'
+  teacher: '给老师',
+  classmate: '给同学',
+  netfriend: '给网友'
 } as const

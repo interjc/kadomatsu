@@ -1,52 +1,45 @@
 <script setup lang="ts">
-const colors = [
-  ['#f0f9ff', '#dbeafe'], // 天空蓝
-  ['#f5f3ff', '#ddd6fe'], // 淡紫色
-  ['#ecfeff', '#cffafe'], // 青色
-  ['#f0fdf4', '#dcfce7'], // 翠绿
-  ['#fef2f2', '#fee2e2'], // 玫瑰红
-  ['#fffbeb', '#fef3c7'], // 明黄
-  ['#f8fafc', '#e2e8f0'], // 冷灰
-  ['#faf5ff', '#e9d5ff'], // 亮紫
-  ['#f0fdfa', '#ccfbf1'], // 蒂芙尼蓝
-  ['#fff7ed', '#ffedd5'], // 橙色
-  ['#fdf2f8', '#fce7f3'], // 粉红
-  ['#f5f5f4', '#e7e5e4']  // 暖灰
+import { ref, computed, onMounted } from 'vue'
+
+// 喜庆艳丽的渐变色组合
+const gradients = [
+  ['#fff1f2', '#e11d48'], // 玫红色
+  ['#fff7ed', '#ea580c'], // 橙红色
+  ['#fef2f2', '#dc2626'], // 中国红
+  ['#fdf4ff', '#c026d3'], // 艳紫色
+  ['#fff1f2', '#be123c'], // 玫瑰红
+  ['#fffbeb', '#d97706'], // 金黄色
+  ['#fff1f2', '#db2777'], // 粉红色
+  ['#fef2f2', '#b91c1c'], // 大红色
+  ['#fff7ed', '#c2410c'], // 橘红色
+  ['#fdf4ff', '#a21caf']  // 紫红色
 ]
 
-const currentColorIndex = ref(Math.floor(Math.random() * colors.length))
-const nextColorIndex = ref(getRandomDifferentIndex())
+// 初始化时随机选择一个渐变色
+const colorIndex = ref(Math.floor(Math.random() * gradients.length))
 
-function getRandomDifferentIndex() {
-  const availableIndices = Array.from({ length: colors.length }, (_, i) => i)
-    .filter(i => i !== currentColorIndex.value)
-  return availableIndices[Math.floor(Math.random() * availableIndices.length)]
+// 切换背景颜色
+const changeColor = () => {
+  colorIndex.value = (colorIndex.value + 1) % gradients.length
 }
 
-// 每60秒更换一次颜色
+// 每30秒切换一次颜色
 onMounted(() => {
-  setInterval(() => {
-    currentColorIndex.value = nextColorIndex.value
-    nextColorIndex.value = getRandomDifferentIndex()
-  }, 60 * 1000) // 60秒
+  setInterval(changeColor, 30000)
 })
 
 const backgroundStyle = computed(() => {
-  const currentColors = colors[currentColorIndex.value]
-  const nextColors = colors[nextColorIndex.value]
-
+  const colors = gradients[colorIndex.value]
   return {
-    '--current-color-1': currentColors[0],
-    '--current-color-2': currentColors[1],
-    '--next-color-1': nextColors[0],
-    '--next-color-2': nextColors[1]
+    '--gradient-from': colors[0],
+    '--gradient-to': colors[1]
   }
 })
 </script>
 
 <template>
   <div class="app-container" :style="backgroundStyle">
-    <div class="gradient-bg"></div>
+    <div class="gradient-bg" @dblclick="changeColor"></div>
     <div class="content">
       <ClientOnly>
         <NuxtPage />
@@ -68,42 +61,15 @@ const backgroundStyle = computed(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, var(--current-color-1), var(--current-color-2));
-  animation: gradientAnimation 10s infinite;
+  background: linear-gradient(135deg, var(--gradient-from), var(--gradient-to));
   z-index: 0;
-  transition: background 2s ease;
-}
-
-.gradient-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, var(--next-color-1), var(--next-color-2));
-  opacity: 0;
-  transition: opacity 2s ease;
+  transition: background 0.3s ease;
+  cursor: pointer;
 }
 
 .content {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-}
-
-@keyframes gradientAnimation {
-  0% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 </style>
