@@ -5,9 +5,25 @@ const inputText = ref('')
 const isLoading = ref(false)
 const selectedType = ref<PromptType>('default')
 const messages = ref<Array<{ type: 'user' | 'assistant'; content: string }>>([])
+const copyTips = ref<{ [key: number]: boolean }>({})
 const toast = useToast()
 
 const promptTypes = PROMPT_LABELS
+
+async function copyToClipboard(text: string, index: number) {
+  try {
+    await navigator.clipboard.writeText(text)
+    copyTips.value[index] = true
+    setTimeout(() => {
+      copyTips.value[index] = false
+    }, 2000)
+  } catch (error) {
+    toast.add({
+      title: '复制失败',
+      color: 'red'
+    })
+  }
+}
 
 async function handleSend() {
   if (!inputText.value.trim()) {
@@ -54,22 +70,24 @@ async function handleSend() {
       if (done) break
 
       const chunk = decoder.decode(value)
-      const lines = chunk.split('\n').filter(line => line.trim() !== '')
+      const lines = chunk.split('\n')
 
       for (const line of lines) {
-        if (!line.startsWith('data: ')) continue
-        const data = line.slice(5).trim()
+        if (!line.trim()) continue
+        const text = line.replace('data: ', '').trim()
 
-        if (data === '[DONE]') break
+        if (text === '[DONE]') {
+          isLoading.value = false
+          break
+        }
 
-        // 将新的字符追加到当前消息
-        messages.value[messageIndex].content += data
+        messages.value[messageIndex].content += text
       }
     }
-  } catch (error) {
+  } catch (error: unknown) {
     toast.add({
       title: '生成失败',
-      description: error.message,
+      description: error instanceof Error ? error.message : '未知错误',
       color: 'red'
     })
     // 如果出错，移除空消息
@@ -93,17 +111,27 @@ async function handleSend() {
 
     <!-- 聊天内容区 -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4 max-w-[640px] mx-auto w-full">
-      <div v-for="(message, index) in messages" :key="index" class="flex">
+      <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
-            'max-w-[80%] p-4 rounded-lg',
+            'max-w-[80%] p-4 rounded-lg cursor-pointer',
             message.type === 'user'
               ? 'ml-auto bg-blue-500 text-white'
               : 'mr-auto bg-white shadow'
           ]"
+          @click="copyToClipboard(message.content, index)"
         >
           <pre class="whitespace-pre-wrap">{{ message.content }}</pre>
         </div>
+        <small
+          v-if="copyTips[index]"
+          :class="[
+            'text-blue-500 mt-1 transition-opacity duration-200',
+            message.type === 'user' ? 'ml-auto' : 'mr-auto'
+          ]"
+        >
+          已复制到剪贴板
+        </small>
       </div>
     </div>
 

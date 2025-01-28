@@ -70,18 +70,23 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    let buffer = ''
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
 
-      const chunk = decoder.decode(value)
-      const lines = chunk.split('\n').filter(line => line.trim() !== '')
+      const chunk = decoder.decode(value, { stream: true })
+      buffer += chunk
+
+      const lines = buffer.split('\n')
+      buffer = lines.pop() || '' // Keep the last incomplete line in the buffer
 
       for (const line of lines) {
-        if (line.includes('[DONE]')) continue
-        if (!line.startsWith('data: ')) continue
+        const trimmedLine = line.trim()
+        if (!trimmedLine || trimmedLine === '[DONE]') continue
+        if (!trimmedLine.startsWith('data: ')) continue
 
-        const data = line.slice(5)
+        const data = trimmedLine.slice(5)
         if (data === '[DONE]') continue
 
         try {
@@ -91,7 +96,24 @@ export default defineEventHandler(async (event) => {
             await sendStream(event, content)
           }
         } catch (e) {
-          console.error('Error parsing JSON:', e)
+          console.error('Error parsing JSON:', e, '\nRaw data:', data)
+        }
+      }
+    }
+
+    // Handle any remaining data in the buffer
+    if (buffer.trim()) {
+      const trimmedLine = buffer.trim()
+      if (trimmedLine.startsWith('data: ')) {
+        const data = trimmedLine.slice(5)
+        try {
+          const json = JSON.parse(data)
+          const content = json.choices[0]?.delta?.content || ''
+          if (content) {
+            await sendStream(event, content)
+          }
+        } catch (e) {
+          console.error('Error parsing JSON:', e, '\nRaw data:', data)
         }
       }
     }

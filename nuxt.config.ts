@@ -10,19 +10,20 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    openaiBaseUrl: process.env.NUXT_OPENAI_BASE_URL || 'https://api.openai.com/v1',
-    openaiApiKey: process.env.NUXT_OPENAI_API_KEY || '',
-    openaiModel: process.env.NUXT_OPENAI_MODEL || 'gpt-4o-mini',
+    openaiBaseUrl:
+      process.env.NUXT_OPENAI_BASE_URL || "https://api.openai.com/v1",
+    openaiApiKey: process.env.NUXT_OPENAI_API_KEY || "",
+    openaiModel: process.env.NUXT_OPENAI_MODEL || "gpt-4o-mini",
     public: {
       // 这里放置可以暴露给客户端的配置
-    }
+    },
   },
 
   nitro: {
     // 添加这个配置以支持 multipart/form-data
     experimental: {
-      asyncContext: true
-    }
+      asyncContext: true,
+    },
   },
 
   vite: {
@@ -33,7 +34,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: '音频转字幕',
+      title: "新年祝福小助手",
       meta: [
         {
           "http-equiv": "Cross-Origin-Embedder-Policy",
@@ -47,5 +48,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: "2024-11-08",
+  compatibilityDate: "2025-01-28",
 });
