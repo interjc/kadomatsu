@@ -1,6 +1,9 @@
+export const PUBLIC_PROMPTS = `今年是 2025 中国春节，生肖是蛇`
+
 export const PROMPT_TEMPLATES = {
   default: (text: string) => `
 请根据以下内容生成一段传统中国风格的新年祝福语，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在50字左右
 - 中规中矩、大方得体
 - 包含传统节日元素和美好祝愿
@@ -8,6 +11,7 @@ export const PROMPT_TEMPLATES = {
 
   elder: (text: string) => `
 请根据以下内容生成一段给长辈的新年祝福语，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在50字左右
 - 语气恭敬、用词讲究
 - 多用吉祥喜庆的成语
@@ -17,6 +21,7 @@ export const PROMPT_TEMPLATES = {
 
   friend: (text: string) => `
 请根据以下内容生成一段给好友的新年祝福语，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在50字左右
 - 语气轻松活泼、略带幽默
 - 可以用一些俏皮的网络用语
@@ -26,6 +31,7 @@ export const PROMPT_TEMPLATES = {
 
   colleague: (text: string) => `
 请根据以下内容生成一段给同事的新年祝福语，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在30字左右，简短精炼
 - 语气正式得体、专业大方
 - 可以适当融入职场元素
@@ -35,6 +41,7 @@ export const PROMPT_TEMPLATES = {
 
   xiaohongshu: (text: string) => `
 请根据以下内容生成一段小红书风格的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在80字左右
 - 风格要温暖治愈
 - 多用emoji装饰，让文字更有趣
@@ -45,6 +52,7 @@ export const PROMPT_TEMPLATES = {
 
   moments: (text: string) => `
 请根据以下内容生成一段朋友圈风格的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在40字左右
 - 既要有新意又不能太跳脱
 - 可以适当加入一些简单emoji
@@ -54,6 +62,7 @@ export const PROMPT_TEMPLATES = {
 
   groupchat: (text: string) => `
 请根据以下内容生成一段适合发公司群的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在60字左右
 - 语气要活泼但不失专业
 - 可以有一点小幽默但要把握分寸
@@ -63,6 +72,7 @@ export const PROMPT_TEMPLATES = {
 
   boss: (text: string) => `
 请根据以下内容生成一段给老板的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在50字左右
 - 语气要得体大方又不失个性
 - 体现对领导的尊重
@@ -72,6 +82,7 @@ export const PROMPT_TEMPLATES = {
 
   client: (text: string) => `
 请根据以下内容生成一段给客户的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在40字左右
 - 语气专业而亲切
 - 体现服务意识和重视程度
@@ -81,6 +92,7 @@ export const PROMPT_TEMPLATES = {
 
   teacher: (text: string) => `
 请根据以下内容生成一段给老师的新年祝福，要求：
+- ${PUBLIC_PROMPTS}
 - 字数在60字左右
 - 语气要诚恳感恩
 - 可以回忆往事但不要过于煽情
