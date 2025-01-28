@@ -105,7 +105,10 @@ async function handleSend() {
     <!-- 头部 -->
     <div class="bg-white/60 backdrop-blur-md border-b shadow-sm sticky top-0 z-10">
       <div class="max-w-[640px] mx-auto px-4 py-3">
-        <h1 class="text-xl font-semibold text-gray-800">新年祝福小助手</h1>
+        <div class="flex items-center justify-between">
+          <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
+          <small class="text-gray-500 ml-auto">AI 帮你写出暖心祝福，让心意传递更有温度</small>
+        </div>
       </div>
     </div>
 
