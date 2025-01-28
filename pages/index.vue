@@ -104,9 +104,30 @@ async function handleSend() {
 
     if (!response.ok) throw new Error('请求失败')
 
-    const data = await response.json()
-    messages.value[messageIndex].content = data.content
+    const reader = response.body?.getReader()
+    const decoder = new TextDecoder()
 
+    if (!reader) throw new Error('无法读取响应')
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const chunk = decoder.decode(value)
+      const lines = chunk.split('\n')
+
+      for (const line of lines) {
+        if (!line.trim()) continue
+        const text = line.replace('data: ', '').trim()
+
+        if (text === '[DONE]') {
+          isLoading.value = false
+          break
+        }
+
+        messages.value[messageIndex].content += text
+      }
+    }
   } catch (error: unknown) {
     if (error instanceof Error && error.name === 'AbortError') {
       return // 请求被取消，不需要显示错误
@@ -131,17 +152,17 @@ async function handleSend() {
 <template>
   <div class="min-h-screen flex flex-col relative">
     <!-- 头部 -->
-    <div class="fixed top-0 left-0 right-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm z-20">
+    <div class="fixed top-0 left-0 right-0 bg-white/60 backdrop-blur-md border-b border-gray-200 shadow-sm z-20">
       <div class="max-w-[640px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">✨ 新年祝福小助手 🎊</h1>
+          <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
           <div class="flex items-center gap-3 ml-auto">
             <a
               title="关注 X@interjc"
               href="https://x.com/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
             >
               <Icon name="mdi:twitter" />
             </a>
@@ -150,7 +171,7 @@ async function handleSend() {
               href="https://s.zhaikr.com/vj"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
             >
               <Icon name="mdi:wechat" />
             </a>
@@ -159,7 +180,7 @@ async function handleSend() {
               href="https://justincourse.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
             >
               <Icon name="mdi:school" />
             </a>
@@ -168,7 +189,7 @@ async function handleSend() {
               href="https://bento.me/interjc"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xl text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-300"
+              class="text-xl text-gray-500 hover:text-gray-600 transition-colors duration-300"
             >
               <Icon name="simple-icons:bento" />
             </a>
@@ -211,7 +232,7 @@ async function handleSend() {
     </div>
 
     <!-- 输入框 -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-sm z-20">
+    <div class="fixed bottom-0 left-0 right-0 bg-white/60 backdrop-blur-md border-t border-gray-200 shadow-sm z-20">
       <div class="max-w-[640px] mx-auto p-4">
         <div class="flex gap-2">
           <UDropdown
@@ -307,6 +328,13 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 ::placeholder {
   @apply text-gray-400 dark:text-gray-500;
+}
+
+/* 确保头部和底部的背景始终是白色半透明 */
+.fixed {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* 确保内容区域在固定头部和底部之间滚动 */

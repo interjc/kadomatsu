@@ -29,6 +29,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // 设置响应头为 text/event-stream
+  setResponseHeaders(event, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  })
+
   try {
     const prompt = PROMPT_TEMPLATES[type as PromptType](inputText)
     const response = await fetch(`${config.openaiBaseUrl}/chat/completions`, {
@@ -41,7 +48,7 @@ export default defineEventHandler(async (event) => {
         model: config.openaiModel,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
-        stream: false
+        stream: true
       })
     })
 
@@ -53,9 +60,42 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const data = await response.json()
-    return {
-      content: data.choices[0]?.message?.content || ''
+    const reader = response.body?.getReader()
+    const decoder = new TextDecoder()
+
+    if (!reader) {
+      throw createError({
+        statusCode: 500,
+        message: '无法读取响应流'
+      })
+    }
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const chunk = decoder.decode(value, { stream: true })
+      const lines = chunk.split('\n')
+
+      for (const line of lines) {
+        if (!line.trim()) continue
+        const text = line.replace('data: ', '').trim()
+
+        if (text === '[DONE]') {
+          await sendStream(event, '[DONE]')
+          break
+        }
+
+        try {
+          const json = JSON.parse(text)
+          const content = json.choices[0]?.delta?.content || ''
+          if (content) {
+            await sendStream(event, content)
+          }
+        } catch (e) {
+          console.error('Error parsing JSON:', e, '\nRaw data:', text)
+        }
+      }
     }
 
   } catch (error: unknown) {
@@ -66,3 +106,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 })
+
+function sendStream(event: any, data: string) {
+  return event.node.res.write(`data: ${data}\n\n`)
+}
