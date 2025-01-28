@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
-// 喜庆艳丽的渐变色组合
+// 优雅淡雅的渐变色组合
 const gradients = [
-  ['#fff1f2', '#e11d48'], // 玫红色
-  ['#fff7ed', '#ea580c'], // 橙红色
-  ['#fef2f2', '#dc2626'], // 中国红
-  ['#fdf4ff', '#c026d3'], // 艳紫色
-  ['#fff1f2', '#be123c'], // 玫瑰红
-  ['#fffbeb', '#d97706'], // 金黄色
-  ['#fff1f2', '#db2777'], // 粉红色
-  ['#fef2f2', '#b91c1c'], // 大红色
-  ['#fff7ed', '#c2410c'], // 橘红色
-  ['#fdf4ff', '#a21caf']  // 紫红色
+  ['#fdf2f8', '#fbcfe8'], // 淡粉色
+  ['#f5f3ff', '#ddd6fe'], // 淡紫色
+  ['#ecfeff', '#cffafe'], // 淡青色
+  ['#f0fdf4', '#dcfce7'], // 淡绿色
+  ['#fff7ed', '#fed7aa'], // 淡橙色
+  ['#fef2f2', '#fecaca'], // 淡红色
+  ['#fffbeb', '#fde68a'], // 淡金色
+  ['#f8fafc', '#e2e8f0'], // 淡蓝灰
+  ['#faf5ff', '#e9d5ff'], // 淡紫罗兰
+  ['#f0f9ff', '#bae6fd'], // 淡天蓝
+  ['#fefce8', '#fef08a'], // 淡柠檬
+  ['#fff1f2', '#fecdd3']  // 淡玫瑰
 ]
 
 // 初始化时随机选择一个渐变色
