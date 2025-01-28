@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { text, type = 'default' } = body
+  const { text, type = 'default', time = new Date().toLocaleString() } = body
   const inputText = text.trim()
 
   if (!inputText) {
@@ -30,8 +30,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const prompt = PROMPT_TEMPLATES[type as PromptType](inputText)
-    const response = await fetch(`${config.openaiBaseUrl}/chat/completions`, {
+    const prompt = [`当前时间：${time}`, PROMPT_TEMPLATES[type as PromptType](inputText)].join('\n\n')
+
+    const requestOptions = {
+      uri: `${config.openaiBaseUrl}/chat/completions`,
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.openaiApiKey}`,
@@ -43,7 +45,13 @@ export default defineEventHandler(async (event) => {
         temperature: 0.7,
         stream: false
       })
-    })
+    }
+
+    console.log(`${requestOptions.method}|${requestOptions.uri} Request => `, requestOptions.body);
+
+    const response = await fetch(requestOptions.uri, {
+      ...requestOptions,
+    });
 
     if (!response.ok) {
       const error = await response.json()
@@ -54,6 +62,9 @@ export default defineEventHandler(async (event) => {
     }
 
     const data = await response.json()
+
+    console.log(`${requestOptions.method}|${requestOptions.uri} Response => `, data)
+
     return {
       content: data.choices[0]?.message?.content || ''
     }

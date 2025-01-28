@@ -90,11 +90,14 @@ async function handleSend() {
       content: ''
     })
 
+    const time = new Date().toLocaleString()
+
     const response = await fetch('/api/generate', {
       method: 'POST',
       body: JSON.stringify({
+        time,
         text: userMessage,
-        type: selectedType.value
+        type: selectedType.value,
       }),
       headers: {
         'Content-Type': 'application/json'
