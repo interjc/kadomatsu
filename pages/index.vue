@@ -7,6 +7,8 @@ const selectedType = ref<PromptType>('default')
 const messages = ref<Array<{ type: 'user' | 'assistant'; content: string }>>([])
 const copyTips = ref<{ [key: number]: boolean }>({})
 const toast = useToast()
+const abortController = ref<AbortController | null>(null)
+const isHovering = ref(false)
 
 const promptTypes = PROMPT_LABELS
 
@@ -25,7 +27,28 @@ async function copyToClipboard(text: string, index: number) {
   }
 }
 
+function cancelRequest() {
+  if (abortController.value) {
+    abortController.value.abort()
+    abortController.value = null
+    isLoading.value = false
+
+    // 处理最后一条消息
+    const lastMessage = messages.value[messages.value.length - 1]
+    if (lastMessage && lastMessage.type === 'assistant') {
+      if (!lastMessage.content.trim()) {
+        lastMessage.content = '❌ 生成已取消'
+      }
+    }
+  }
+}
+
 async function handleSend() {
+  if (isLoading.value) {
+    cancelRequest()
+    return
+  }
+
   if (!inputText.value.trim()) {
     toast.add({
       title: '输入不能为空',
@@ -38,6 +61,7 @@ async function handleSend() {
   const userMessage = inputText.value
   inputText.value = ''
   isLoading.value = true
+  abortController.value = new AbortController()
 
   try {
     // 添加一个空的助手消息
@@ -55,7 +79,8 @@ async function handleSend() {
       }),
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      signal: abortController.value.signal
     })
 
     if (!response.ok) throw new Error('请求失败')
@@ -85,6 +110,10 @@ async function handleSend() {
       }
     }
   } catch (error: unknown) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      return // 请求被取消，不需要显示错误
+    }
+
     toast.add({
       title: '生成失败',
       description: error instanceof Error ? error.message : '未知错误',
@@ -96,6 +125,7 @@ async function handleSend() {
     }
   } finally {
     isLoading.value = false
+    abortController.value = null
   }
 }
 </script>
@@ -165,10 +195,19 @@ async function handleSend() {
 
           <button
             @click="handleSend"
-            :disabled="isLoading"
-            class="px-4 py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600/90 disabled:bg-gray-400/90 transition-colors duration-200 font-medium"
+            :disabled="false"
+            @mouseenter="isHovering = true"
+            @mouseleave="isHovering = false"
+            class="px-4 py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-lg transition-all duration-200 font-medium"
+            :class="[
+              isLoading
+                ? (isHovering ? 'bg-red-500/90 hover:bg-red-600/90' : 'bg-blue-500/90 hover:bg-blue-600/90')
+                : 'bg-blue-500/90 hover:bg-blue-600/90'
+            ]"
           >
-            <span v-if="isLoading">发送中...</span>
+            <span v-if="isLoading">
+              {{ isHovering ? '取消生成' : '生成中...' }}
+            </span>
             <span v-else>发送</span>
           </button>
         </div>
