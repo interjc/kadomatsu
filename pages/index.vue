@@ -101,11 +101,11 @@ async function handleSend() {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
+  <div class="min-h-screen flex flex-col">
     <!-- 头部 -->
-    <div class="bg-white border-b shadow-sm">
+    <div class="bg-white/60 backdrop-blur-md border-b shadow-sm sticky top-0 z-10">
       <div class="max-w-[640px] mx-auto px-4 py-3">
-        <h1 class="text-xl font-semibold">新年祝福小助手</h1>
+        <h1 class="text-xl font-semibold text-gray-800">新年祝福小助手</h1>
       </div>
     </div>
 
@@ -114,10 +114,10 @@ async function handleSend() {
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
-            'max-w-[80%] p-4 rounded-lg cursor-pointer',
+            'max-w-[80%] p-4 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg',
             message.type === 'user'
-              ? 'ml-auto bg-blue-500 text-white'
-              : 'mr-auto bg-white shadow'
+              ? 'ml-auto bg-blue-500/85 backdrop-blur-md text-white'
+              : 'mr-auto bg-white/70 backdrop-blur-md shadow-sm hover:bg-white/80'
           ]"
           @click="copyToClipboard(message.content, index)"
         >
@@ -126,7 +126,7 @@ async function handleSend() {
         <small
           v-if="copyTips[index]"
           :class="[
-            'text-blue-500 mt-1 transition-opacity duration-200',
+            'text-blue-600 mt-1 transition-opacity duration-200 font-medium',
             message.type === 'user' ? 'ml-auto' : 'mr-auto'
           ]"
         >
@@ -136,37 +136,39 @@ async function handleSend() {
     </div>
 
     <!-- 输入框 -->
-    <div class="sticky bottom-0 bg-white border-t p-4">
-      <div class="max-w-[640px] mx-auto flex gap-2">
-        <select
-          v-model="selectedType"
-          class="w-28 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option
-            v-for="(label, type) in promptTypes"
-            :key="type"
-            :value="type"
+    <div class="sticky bottom-0 bg-white/60 backdrop-blur-md border-t shadow-sm z-10">
+      <div class="max-w-[640px] mx-auto p-4">
+        <div class="flex gap-2">
+          <select
+            v-model="selectedType"
+            class="w-28 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90"
           >
-            {{ label }}
-          </option>
-        </select>
+            <option
+              v-for="(label, type) in promptTypes"
+              :key="type"
+              :value="type"
+            >
+              {{ label }}
+            </option>
+          </select>
 
-        <textarea
-          v-model="inputText"
-          class="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          :placeholder="'请输入需要生成' + promptTypes[selectedType] + '的相关文字...'"
-          rows="1"
-          @keydown.enter.prevent="handleSend"
-        ></textarea>
+          <textarea
+            v-model="inputText"
+            class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80 backdrop-blur-sm transition-colors duration-200 hover:bg-white/90"
+            :placeholder="'请输入需要生成' + promptTypes[selectedType] + '的相关文字...'"
+            rows="1"
+            @keydown.enter.prevent="handleSend"
+          ></textarea>
 
-        <button
-          @click="handleSend"
-          :disabled="isLoading"
-          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
-        >
-          <span v-if="isLoading">发送中...</span>
-          <span v-else>发送</span>
-        </button>
+          <button
+            @click="handleSend"
+            :disabled="isLoading"
+            class="px-4 py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600/90 disabled:bg-gray-400/90 transition-colors duration-200 font-medium"
+          >
+            <span v-if="isLoading">发送中...</span>
+            <span v-else>发送</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -178,5 +180,23 @@ textarea {
   min-height: 40px;
   max-height: 200px;
   overflow-y: auto;
+}
+
+/* 自定义滚动条样式 */
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
 }
 </style>
