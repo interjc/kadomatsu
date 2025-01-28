@@ -182,10 +182,10 @@ async function handleSend() {
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[
-            'max-w-[80%] p-4 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg',
+            'max-w-[80%] p-4 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg backdrop-blur-md',
             message.type === 'user'
-              ? 'ml-auto bg-blue-500/85 backdrop-blur-md text-white'
-              : 'mr-auto bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm hover:bg-white/80 dark:hover:bg-gray-800/80 text-gray-800 dark:text-gray-100'
+              ? 'ml-auto bg-blue-500/75 text-white shadow-blue-500/20'
+              : 'mr-auto bg-white/60 dark:bg-gray-800/60 shadow-sm hover:bg-white/70 dark:hover:bg-gray-800/70 text-gray-800 dark:text-gray-100 shadow-gray-500/10'
           ]"
           @click="copyToClipboard(message.content, index)"
         >
@@ -193,6 +193,7 @@ async function handleSend() {
             <div class="space-y-2">
               <USkeleton class="h-4 w-[190px]" />
               <USkeleton class="h-4 w-[160px]" />
+              <USkeleton class="h-4 w-[130px]" />
             </div>
           </template>
           <pre v-else class="whitespace-pre-wrap">{{ message.content }}</pre>
@@ -323,5 +324,25 @@ textarea::-webkit-scrollbar-thumb:hover {
 .min-h-screen {
   height: 100vh;
   height: 100dvh;
+}
+
+/* 对话框的毛玻璃效果 */
+:deep(.max-w-\[80\%\]) {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* 用户消息特殊效果 */
+:deep(.bg-blue-500\/75) {
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* 助手消息特殊效果 */
+:deep(.bg-white\/60) {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 </style>
