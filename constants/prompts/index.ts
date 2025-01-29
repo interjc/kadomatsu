@@ -142,16 +142,16 @@ export const PROMPT_TEMPLATES = {
 export type PromptType = keyof typeof PROMPT_TEMPLATES
 
 export const PROMPT_LABELS = {
-  default: '传统祝福',
-  elder: '给长辈',
-  friend: '给好友',
-  colleague: '给同事',
+  default: '日常',
+  elder: '长辈',
+  friend: '好友',
+  colleague: '同事',
   xiaohongshu: '小红书',
   moments: '朋友圈',
   groupchat: '公司群',
-  boss: '给老板',
-  client: '给客户',
-  teacher: '给老师',
-  classmate: '给同学',
-  bestfriend: '给铁哥们'
+  boss: '老板',
+  client: '客户',
+  teacher: '老师',
+  classmate: '同学',
+  bestfriend: '铁哥们'
 } as const
