@@ -12,6 +12,24 @@ const isHovering = ref(false)
 
 const promptTypes = PROMPT_LABELS
 
+// 添加一个引用来获取聊天容器元素
+const chatContainerRef = ref<HTMLElement | null>(null)
+
+// 滚动到底部的方法
+function scrollToBottom() {
+  if (chatContainerRef.value) {
+    chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight
+  }
+}
+
+// 监听消息变化，自动滚动到底部
+watch(messages, () => {
+  // 使用 nextTick 确保 DOM 更新后再滚动
+  nextTick(() => {
+    scrollToBottom()
+  })
+}, { deep: true })
+
 // 转换为下拉菜单选项
 const dropdownItems = [
   Object.entries(promptTypes).map(([value, label]) => ({
@@ -180,7 +198,10 @@ async function handleSend() {
     </div>
 
     <!-- 聊天内容区 -->
-    <div class="chat-container flex-1 overflow-y-auto p-4 pb-24 space-y-4 max-w-[1280px] mx-auto w-full mt-[60px] mb-[76px]">
+    <div
+      ref="chatContainerRef"
+      class="chat-container flex-1 overflow-y-auto p-4 pb-24 space-y-4 max-w-[1280px] mx-auto w-full mt-[60px] mb-[76px]"
+    >
       <div v-for="(message, index) in messages" :key="index" class="flex flex-col">
         <div
           :class="[

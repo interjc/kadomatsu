@@ -1,10 +1,4 @@
-const siteURLs = [
-  "https://2025.zhaikr.com",
-  "https://zhufu.zhaikr.com",
-  "https://kadomatsu.sukina.ai",
-];
-
-const siteURL = process.env.NUXT_PUBLIC_SITE_URL || siteURLs[0];
+const siteURL = process.env.NUXT_PUBLIC_SITE_URL || "https://2025.zhaikr.com";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
