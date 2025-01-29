@@ -14,38 +14,9 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "nuxt-icon", "nuxt-security"],
 
   security: {
-    headers: {
-      crossOriginResourcePolicy: 'cross-origin',
-      crossOriginOpenerPolicy: 'unsafe-none',
-      crossOriginEmbedderPolicy: false,
-      contentSecurityPolicy: {
-        'base-uri': ["'self'"],
-        'font-src': ["'self'", 'https:', 'data:'],
-        'form-action': ["'self'"],
-        'frame-ancestors': ["'self'"],
-        'img-src': ["'self'", 'data:', 'https:'],
-        'object-src': ["'none'"],
-        'script-src-attr': ["'none'"],
-        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-        'script-src': [
-          "'self'",
-          "'unsafe-inline'",
-          "'strict-dynamic'",
-          "'nonce-{{nonce}}'",
-          'https://www.clarity.ms'
-        ],
-        'connect-src': [
-          ...siteURLs,
-          "'self'",
-          'https://api.deepseek.com',
-          'https://api.openai.com',
-          'https://www.clarity.ms',
-          '*'
-        ]
-      }
-    },
+    headers: false,
     corsHandler: {
-      origin: ['*'],
+      origin: '*',
       methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
       preflight: {
         statusCode: 204
@@ -54,10 +25,8 @@ export default defineNuxtConfig({
     },
     rateLimiter: false,
     requestSizeLimiter: false,
-    xssValidator: {
-      throwError: true
-    },
-    hidePoweredBy: true
+    xssValidator: false,
+    hidePoweredBy: false
   },
 
   ui: {
