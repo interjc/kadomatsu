@@ -136,7 +136,7 @@ async function handleSend() {
     <div class="fixed top-0 left-0 right-0 bg-white/60 backdrop-blur-md border-b border-gray-200 shadow-sm z-20">
       <div class="max-w-[1280px] mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold text-gray-800">✨ 新年祝福小助手 🎊</h1>
+          <h1 class="text-xl font-semibold text-gray-800">✨ 祝福小助手 🎊</h1>
           <div class="flex items-center gap-3 ml-auto">
             <a
               title="关注 X@interjc"

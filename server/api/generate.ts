@@ -61,13 +61,15 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const data = await response.json()
+    const res = await response.json()
+    const content = res.choices[0]?.message?.content || ''
 
-    console.log(`${requestOptions.method}|${requestOptions.uri} Response => `, data)
+    console.log(`${requestOptions.method}|${requestOptions.uri} Response => `, {
+      res,
+      content,
+    });
 
-    return {
-      content: data.choices[0]?.message?.content || ''
-    }
+    return { content }
 
   } catch (error: unknown) {
     const err = error as { statusCode?: number; message?: string }
