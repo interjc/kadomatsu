@@ -15,9 +15,9 @@ export default defineNuxtConfig({
 
   security: {
     headers: {
-      crossOriginResourcePolicy: 'same-origin',
-      crossOriginOpenerPolicy: 'same-origin',
-      crossOriginEmbedderPolicy: 'require-corp',
+      crossOriginResourcePolicy: 'cross-origin',
+      crossOriginOpenerPolicy: 'unsafe-none',
+      crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         'base-uri': ["'self'"],
         'font-src': ["'self'", 'https:', 'data:'],
@@ -39,26 +39,21 @@ export default defineNuxtConfig({
           "'self'",
           'https://api.deepseek.com',
           'https://api.openai.com',
-          'https://www.clarity.ms'
+          'https://www.clarity.ms',
+          '*'
         ]
       }
     },
     corsHandler: {
-      origin: [siteURL],
+      origin: ['*'],
       methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
       preflight: {
         statusCode: 204
       },
       credentials: true
     },
-    rateLimiter: {
-      tokensPerInterval: 150,
-      interval: 300000,
-      throwError: true
-    },
-    requestSizeLimiter: {
-      maxRequestSizeInBytes: 2000000,
-    },
+    rateLimiter: false,
+    requestSizeLimiter: false,
     xssValidator: {
       throwError: true
     },
