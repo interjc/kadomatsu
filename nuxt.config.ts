@@ -1,4 +1,5 @@
-const siteURL = process.env.NUXT_PUBLIC_SITE_URL || "https://2025.zhaikr.com";
+const siteURL =
+  process.env.NUXT_PUBLIC_SITE_URL || "https://kadomatsu.sukina.ai";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
