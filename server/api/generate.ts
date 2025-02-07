@@ -69,7 +69,10 @@ export default defineEventHandler(async (event) => {
       content,
     });
 
-    return { content }
+    return {
+      ok: true,
+      content
+    }
 
   } catch (error: unknown) {
     const err = error as { statusCode?: number; message?: string }

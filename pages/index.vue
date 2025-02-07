@@ -214,6 +214,7 @@ async function handleSend() {
         >
           <template v-if="message.type === 'assistant' && !message.content && isLoading">
             <div class="space-y-2">
+              <div class="text-gray-500 dark:text-gray-400">努力加载中……</div>
               <USkeleton class="h-4 w-[190px]" />
               <USkeleton class="h-4 w-[130px]" />
             </div>
