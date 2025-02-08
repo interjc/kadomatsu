@@ -37,24 +37,31 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.openaiApiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({
         model: config.openaiModel,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         stream: false
-      })
+      }, null, 0)
     }
 
     console.log(`${requestOptions.method}|${requestOptions.uri} Request => `, requestOptions.body);
 
     const response = await fetch(requestOptions.uri, {
-      ...requestOptions,
+      method: requestOptions.method,
+      headers: requestOptions.headers,
+      body: requestOptions.body
     });
 
     if (!response.ok) {
       const error = await response.json()
+
+      console.log(`${requestOptions.method}|${requestOptions.uri} Response => `, {
+        error,
+      });
+
       throw createError({
         statusCode: response.status,
         message: error.error?.message || '生成失败'

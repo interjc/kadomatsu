@@ -29,12 +29,12 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    openaiBaseUrl:
-      process.env.NUXT_OPENAI_BASE_URL || "https://api.openai.com/v1",
+    openaiBaseUrl: process.env.NUXT_OPENAI_BASE_URL || "https://api.openai.com/v1",
     openaiApiKey: process.env.NUXT_OPENAI_API_KEY || "",
     openaiModel: process.env.NUXT_OPENAI_MODEL || "gpt-4o-mini",
     public: {
       siteURL,
+      model: process.env.NUXT_OPENAI_MODEL || "gpt-4o-mini",
     },
   },
 
